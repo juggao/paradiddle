@@ -27,6 +27,8 @@ import random, sys
 #57 A2 Crash Cymbal 2 81 A4 Open Triangle
 #58 Bb2 Vibraslap
 
+bpm = 155
+
 def pairwise(iterable):
     "s -> (s0, s1), (s2, s3), (s4, s5), ..."
     a = iter(iterable)
@@ -38,12 +40,11 @@ def translate_to_midi(text, output_file):
     channel = 10-1       #bug: 10 translates to channel 11
     time = 1  # In beats
     duration = 0.25  # In beats
-    tempo = 155  # In BPM
     volume = 100  # 0-127, as per MIDI standard
 
     # Create MIDIFile object with 1 track
     midi = MIDIFile(1)
-    midi.addTempo(track, time, tempo)
+    midi.addTempo(track, time, bpm)
 
     # Map 'L' and 'R' to MIDI notes
 #    notes = {'L': 38, 'R': 40}
@@ -71,7 +72,7 @@ def translate_to_midi(text, output_file):
                     midi.addNote(track, channel, note, time, duration, random_volume)
                     time += duration
                 text = text[2:]    
-        print(notestring+ "\n")
+        print("Writing MIDI notes: \n"+notestring)
     except ValueError:
         pass
         
@@ -85,6 +86,8 @@ filename= ""
 # Check if filename is provided as a command-line argument
 if len(sys.argv) >= 2:
     filename = sys.argv[1]          
+if len(sys.argv) >= 3:
+    bpm = int(sys.argv[2])    
 try:
     print("opening: "+filename)
     with open(filename, 'r') as file:
