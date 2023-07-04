@@ -30,7 +30,7 @@ import random
 def translate_to_midi(text, output_file):
     # Set up MIDI parameters
     track = 0
-    channel = 10
+    channel = 10-1       #bug: 10 translates to channel 11
     time = 1  # In beats
     duration = 0.25  # In beats
     tempo = 155  # In BPM
@@ -59,21 +59,20 @@ def translate_to_midi(text, output_file):
 # Example usage
 import sys
 
+filename= ""
 # Check if filename is provided as a command-line argument
-if len(sys.argv) < 2:
-    print("Please provide the filename as a command-line argument.")
-    sys.exit(1)
-
-filename = sys.argv[1]
+if len(sys.argv) > 2:
+    filename = sys.argv[1]          
 try:
     with open(filename, 'r') as file:
         lrstring = file.read()
 except FileNotFoundError:
+    lrstring = sys.stdin.read()
     print("File not found.")
 except IOError:
     print("Error reading the file.")
             
-output_file = 'snare_drum.mid'
+output_file = 'about.mid'
 print(lrstring)
 translate_to_midi(lrstring, output_file)
 
