@@ -37,8 +37,8 @@ parser = argparse.ArgumentParser(
                     description='Generates a MIDI file from a "LLRRLLLRR" string',
                     epilog='(c) 2023 René Oudeweg')
 
-parser.add_argument('filename')           # positional argument
-parser.add_argument('-b', '--bpm')      # option that takes a value
+parser.add_argument('-f',  '--filename')           
+parser.add_argument('-b', '--bpm')      
 parser.add_argument('-v', '--verbose')
 parser.add_argument('-o', '--output')
 
@@ -99,7 +99,7 @@ def translate_to_midi(text, output_file):
 
 # Check if filename is provided as a command-line argument
 args = parser.parse_args()
-print(args.filename, args.bpm, args.verbose, args.output)
+#print(args.filename, args.bpm, args.verbose, args.output)
 if args.bpm != 0:
     bpm = int(args.bpm)
 if not args.filename:
