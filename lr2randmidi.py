@@ -1,5 +1,5 @@
 from midiutil import MIDIFile
-import random
+import random, sys
 
 #Key# Note Drum Sound Key# Note Drum Sound
 #35 B0 Acoustic Bass Drum 59 B2 Ride Cymbal 2
@@ -27,6 +27,11 @@ import random
 #57 A2 Crash Cymbal 2 81 A4 Open Triangle
 #58 Bb2 Vibraslap
 
+def pairwise(iterable):
+    "s -> (s0, s1), (s2, s3), (s4, s5), ..."
+    a = iter(iterable)
+    return zip(a, a)
+
 def translate_to_midi(text, output_file):
     # Set up MIDI parameters
     track = 0
@@ -45,25 +50,43 @@ def translate_to_midi(text, output_file):
     random.seed(5)
     
     # Convert text to MIDI notes
-    for char in text:
-        if char == 'L' or char == 'R':   
-            note = random.randint(35,81)
-            random_volume = random.randint(68, 100)
-            midi.addNote(track, channel, note, time, duration, random_volume)
-            time += duration
+    try:
+        char1=''
+        char2=''
+        notestring="" 
+        for (char1, char2) in pairwise(text):
+                note = random.randint(35,81)
+                if char1 == 'L' or char1 == 'R':   
+                    random_volume = random.randint(68, 100)
+                    notestring += str(note) 
+                    notestring += ' ' 
+                    midi.addNote(track, channel, note, time, duration, random_volume)
+                    time += duration
+                if char2 == 'L' or char2 == 'R':   
+                    if char1 != char2:
+                        note = random.randint(35,81)
+                    random_volume = random.randint(68, 100)
+                    notestring += str(note) 
+                    notestring += ' ' 
+                    midi.addNote(track, channel, note, time, duration, random_volume)
+                    time += duration
+                text = text[2:]    
+        print(notestring+ "\n")
+    except ValueError:
+        pass
+        
 
     # Write MIDI data to file
     with open(output_file, 'wb') as file:
         midi.writeFile(file)
 
-# Example usage
-import sys
 
 filename= ""
 # Check if filename is provided as a command-line argument
-if len(sys.argv) > 2:
+if len(sys.argv) >= 2:
     filename = sys.argv[1]          
 try:
+    print("opening: "+filename)
     with open(filename, 'r') as file:
         lrstring = file.read()
 except FileNotFoundError:
