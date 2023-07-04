@@ -1,0 +1,2 @@
+#!/bin/bash
+fluidsynth -a pulseaudio -m alsa_seq -o midi.autoconnect=1 -g 1.0 /path/to/some/soundfont.sf2
