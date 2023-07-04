@@ -6,15 +6,16 @@ Download the dfa.py statemachine from my dfa repository
 
 Install rosegarden to play the generated midifile in 155 BPM
 
-usage: l2randmidi.py [-h] [-b BPM] [-v VERBOSE] [-o OUTPUT] filename
+
+
+python lr2randmidi.py -h
+usage: l2randmidi.py [-h] [-f FILENAME] [-b BPM] [-v VERBOSE] [-o OUTPUT]
 
 Generates a MIDI file from a "LLRRLLLRR" string
 
-positional arguments:
-  filename
-
 options:
   -h, --help            show this help message and exit
+  -f FILENAME, --filename FILENAME
   -b BPM, --bpm BPM
   -v VERBOSE, --verbose VERBOSE
   -o OUTPUT, --output OUTPUT
@@ -23,7 +24,8 @@ options:
 
 
 
+
 Example:
 
-$ python pama.py dfa.py | python lr.py | python lr2randmidi.py | rosegarden about.mid
+$ python pama.py dfa.py | python lr.py | python lr2randmidi.py -b 220 | rosegarden about.mid
 
