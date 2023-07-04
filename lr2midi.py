@@ -1,4 +1,5 @@
 from midiutil import MIDIFile
+import random
 
 #Key# Note Drum Sound Key# Note Drum Sound
 #35 B0 Acoustic Bass Drum 59 B2 Ride Cymbal 2
@@ -32,7 +33,7 @@ def translate_to_midi(text, output_file):
     channel = 10
     time = 1  # In beats
     duration = 0.25  # In beats
-    tempo = 220  # In BPM
+    tempo = 155  # In BPM
     volume = 100  # 0-127, as per MIDI standard
 
     # Create MIDIFile object with 1 track
@@ -41,12 +42,14 @@ def translate_to_midi(text, output_file):
 
     # Map 'L' and 'R' to MIDI notes
     notes = {'L': 38, 'R': 40}
-
+    random.seed(5)
+    
     # Convert text to MIDI notes
     for char in text:
         if char in notes:
             note = notes[char]
-            midi.addNote(track, channel, note, time, duration, volume)
+            random_volume = random.randint(68, 100)
+            midi.addNote(track, channel, note, time, duration, random_volume)
             time += duration
 
     # Write MIDI data to file
